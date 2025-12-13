@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 using Trade_Position.Constants;
 using Trade_Position.Models;
 using Trade_Position.Services;
@@ -8,10 +9,13 @@ namespace Trade_Position.Controllers
     /// <summary>
     /// Trade Controller that exposes REST endpoints for adding trades and retrieving trades and positions
     /// </summary>
+    [ApiVersion(API_VERSION_01)]
+    [Route(Routing)]
     [ApiController]
-    [Route("api/v1")]
     public class TradeController : ControllerBase
     {
+        private const string API_VERSION_01 = "1";
+        private const string Routing = "api/V{version:apiVersion}";
         private readonly TradeService _tradeService;
 
         /// <summary>

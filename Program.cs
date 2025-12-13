@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add controllers ONLY (no views)
 builder.Services.AddControllers();
 
+builder.Services.AddApiVersioning();
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
