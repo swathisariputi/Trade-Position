@@ -13,7 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<ITradeRepository, TradeRepository>();
-builder.Services.AddSingleton<TradeService>();
+builder.Services.AddSingleton<ITradeService, TradeService>();
 
 var app = builder.Build();
 

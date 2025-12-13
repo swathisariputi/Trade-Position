@@ -7,7 +7,7 @@ namespace Trade_Position.Services
     /// <summary>
     /// Service to write logic for endpoints
     /// </summary>
-    public class TradeService
+    public class TradeService : ITradeService
     {
         private readonly ITradeRepository _repo;
 

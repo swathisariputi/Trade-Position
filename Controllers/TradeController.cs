@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Trade_Position.Constants;
 using Trade_Position.Models;
-using Trade_Position.Services;
+using Trade_Position.Interfaces;
 
 namespace Trade_Position.Controllers
 {
@@ -12,13 +12,13 @@ namespace Trade_Position.Controllers
     [Route("api/v1")]
     public class TradeController : ControllerBase
     {
-        private readonly TradeService _tradeService;
+        private readonly ITradeService _tradeService;
 
         /// <summary>
         /// Constructor initiates TradeService
         /// </summary>
         /// <param name="svc"></param>
-        public TradeController(TradeService svc) => _tradeService = svc;
+        public TradeController(ITradeService tradeService) => _tradeService = tradeService;
 
         /// <summary>
         /// Adds Trade using rest service
