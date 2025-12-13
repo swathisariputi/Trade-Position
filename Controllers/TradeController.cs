@@ -13,7 +13,7 @@ namespace Trade_Position.Controllers
 
         public TradeController(TradeService svc) => _tradeService = svc;
 
-        [HttpPost("trades")]
+        [HttpPost("add/trade")]
         public ActionResult<Trade> SubmitTrade([FromBody] Trade trade)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -27,7 +27,7 @@ namespace Trade_Position.Controllers
         [HttpGet("positions")]
         public ActionResult<IDictionary<string, Position>> GetPositions() => Ok(_tradeService.GetAllPositions());
 
-        [HttpGet("positions/{instrument}")]
+        [HttpGet("positions/{Asset}")]
         public ActionResult<Position> GetPosition(string Asset)
         {
             var pos = _tradeService.GetPosition(Asset);

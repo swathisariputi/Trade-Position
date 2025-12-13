@@ -1,0 +1,18 @@
+﻿namespace Trade_Position.Constants
+{
+    public class DBContants
+    {
+        public const string SP_add_trade_history = "sp_add_trade_history";
+        public const string Account = "Account";
+        public const string Asset = "Asset";
+        public const string Price = "Price";
+        public const string TradeType = "TradeType";
+        public const string Quantity = "Quantity";
+        public const string SP_add_update_position = "sp_add_or_update_position";
+        public const string NetQuantity = "NetQuantity";
+        public const string AveragePrice = "AveragePrice";
+        public const string RealizedPnl = "RealizedPnl";
+        public const string NotionalValue = "NotionalValue";
+        public const string PositionStatus = "PositionStatus";
+    }
+}

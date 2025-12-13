@@ -4,7 +4,7 @@ namespace Trade_Position.Interfaces
 {
     public interface ITradeRepository
     {
-        public void AddToTradeHistory(Trade trade);
+        public decimal AddToTradeHistory(Trade trade);
 
         public IReadOnlyCollection<Trade> GetAllTrade();
 
