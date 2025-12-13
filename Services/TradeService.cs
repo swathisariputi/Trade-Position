@@ -90,7 +90,7 @@ namespace Trade_Position.Services
                 };
             }
 
-            if (trade.TradeType == TradeType.BUY.ToString())
+            if (trade.TradeType == TradeType.BUY)
             {
                 var totalCost = (position.NetQuantity * position.AveragePrice) + (trade.Quantity * trade.Price);
 
@@ -98,7 +98,7 @@ namespace Trade_Position.Services
 
                 position.AveragePrice = position.NetQuantity == 0 ? 0 : totalCost / position.NetQuantity;
             }
-            else if (trade.TradeType == TradeType.SELL.ToString())
+            else if (trade.TradeType == TradeType.SELL)
             {
                 if (trade.Quantity > position.NetQuantity)
                     throw new InvalidOperationException("Sell quantity exceeds available position.");
@@ -143,13 +143,13 @@ namespace Trade_Position.Services
             }
             foreach (var trade in trades)
             {
-                if (trade.TradeType == TradeType.BUY.ToString())
+                if (trade.TradeType == TradeType.BUY)
                 {
                     var totalCost = (position.NetQuantity * position.AveragePrice) +  (trade.Quantity * trade.Price);
                     position.NetQuantity += trade.Quantity;
                     position.AveragePrice = position.NetQuantity == 0 ? 0 : totalCost / position.NetQuantity;
                 }
-                else if (trade.TradeType == TradeType.SELL.ToString())
+                else if (trade.TradeType == TradeType.SELL)
                 {
                     if (trade.Quantity > position.NetQuantity)
                         throw new InvalidOperationException(

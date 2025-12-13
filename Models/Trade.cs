@@ -17,7 +17,7 @@ namespace Trade_Position.Models
         public string Account { get; set; }
 
         [Required]
-        public string TradeType { get; set; }
+        public TradeType TradeType { get; set; }
 
         [Required]
         [Range(1, long.MaxValue)]

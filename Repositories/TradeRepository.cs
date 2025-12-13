@@ -36,7 +36,7 @@ namespace Trade_Position.Repositories
                 cmd.Parameters.AddWithValue(DBContants.Account, trade.Account);
                 cmd.Parameters.AddWithValue(DBContants.Asset, trade.Asset);
                 cmd.Parameters.AddWithValue(DBContants.Price, trade.Price);
-                cmd.Parameters.AddWithValue(DBContants.TradeType, trade.TradeType);
+                cmd.Parameters.AddWithValue(DBContants.TradeType, trade.TradeType.ToString());
                 cmd.Parameters.AddWithValue(DBContants.Quantity, trade.Quantity);
                 conn.Open();
                 return Convert.ToInt32(cmd.ExecuteScalar());
@@ -73,7 +73,7 @@ namespace Trade_Position.Repositories
                                 Price = Convert.ToDecimal(dr[DBContants.Price]),
                                 Quantity = Convert.ToInt64(dr[DBContants.Quantity]),
                                 TradeId = Convert.ToInt32(dr[DBContants.TradeId]),
-                                TradeType = Convert.ToString(dr[DBContants.TradeType]),
+                                TradeType = Enum.Parse<TradeType>(Convert.ToString(dr[DBContants.TradeType])),
                                 TradeTimeStamp = Convert.ToDateTime(dr[DBContants.TradeTimeStamp])
                             }).ToList();
                 }
@@ -221,7 +221,7 @@ namespace Trade_Position.Repositories
                         Price = Convert.ToDecimal(dataset.Tables[0].Rows[0][DBContants.Price]),
                         Quantity = Convert.ToInt64(dataset.Tables[0].Rows[0][DBContants.Quantity]),
                         TradeId = Convert.ToInt32(dataset.Tables[0].Rows[0][DBContants.TradeId]),
-                        TradeType = Convert.ToString(dataset.Tables[0].Rows[0][DBContants.TradeType]),
+                        TradeType = Enum.Parse<TradeType>(Convert.ToString(dataset.Tables[0].Rows[0][DBContants.TradeType])),
                         TradeTimeStamp = Convert.ToDateTime(dataset.Tables[0].Rows[0][DBContants.TradeTimeStamp])
                     };
                 }

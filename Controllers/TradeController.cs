@@ -9,7 +9,7 @@ namespace Trade_Position.Controllers
     /// Trade Controller that exposes REST endpoints for adding trades and retrieving trades and positions
     /// </summary>
     [ApiController]
-    [Route("api")]
+    [Route("api/v1")]
     public class TradeController : ControllerBase
     {
         private readonly TradeService _tradeService;
@@ -66,7 +66,7 @@ namespace Trade_Position.Controllers
         /// <param name="Asset"></param>
         /// <param name="Account"></param>
         /// <returns></returns>
-        [HttpGet("positions/{Asset}/{Account}")]
+        [HttpGet("positions/{Account}/{Asset}")]
         public ActionResult<Position> GetPosition(string Account, string Asset)
         {
             var pos = _tradeService.GetPosition(Account, Asset);
