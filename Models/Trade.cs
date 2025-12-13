@@ -2,6 +2,9 @@
 
 namespace Trade_Position.Models
 {
+    /// <summary>
+    /// Model for a trade
+    /// </summary>
     public sealed class Trade
     {
 

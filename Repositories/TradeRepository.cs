@@ -7,15 +7,24 @@ using Trade_Position.Models;
 
 namespace Trade_Position.Repositories
 {
+    /// <summary>
+    /// To connect to Trade database and perform sql commands
+    /// </summary>
     public class TradeRepository : ITradeRepository
     {
-        // instrument -> thread-safe list (we store as ConcurrentQueue for append-only semantics)
+        // connection string to connect to db - since its local db not maintained it securely
+        // can be maintained as encrypted password in app setting and build connection string for making it more secure
         private readonly string _connectionString;
         public TradeRepository() 
         {
             _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=Trade;Trusted_Connection=True;";
         }
 
+        /// <summary>
+        /// Adds Trade to the TradeHistory table
+        /// </summary>
+        /// <param name="trade"></param>
+        /// <returns></returns>
         public decimal AddToTradeHistory(Trade trade)
         {
             try
@@ -38,6 +47,10 @@ namespace Trade_Position.Repositories
             }
         }
 
+        /// <summary>
+        /// returns all the trades 
+        /// </summary>
+        /// <returns></returns>
         public IReadOnlyCollection<Trade> GetAllTrade()
         {
             try {
@@ -73,8 +86,11 @@ namespace Trade_Position.Repositories
             }
         }
 
-
-        public void AddToPositionHistory(Position position)
+        /// <summary>
+        /// Updates the position if the position is already added to a asset for an account else adds position
+        /// </summary>
+        /// <param name="position"></param>
+        public void AddOrUpdatePosition(Position position)
         {
             try
             {
@@ -98,6 +114,10 @@ namespace Trade_Position.Repositories
             }
         }
 
+        /// <summary>
+        /// Returns the positions of all assets for all accounts
+        /// </summary>
+        /// <returns></returns>
         public IReadOnlyCollection<Position> GetAllPostion()
         {
             try
@@ -136,6 +156,11 @@ namespace Trade_Position.Repositories
             }
         }
 
+        /// <summary>
+        /// Returns Position of an asset in an account
+        /// </summary>
+        /// <param name="Asset"></param>
+        /// <returns></returns>
         public Position GetPositionByAsset(string Asset)
         {
             Position position = new();

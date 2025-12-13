@@ -2,6 +2,9 @@
 
 namespace Trade_Position.Models
 {
+    /// <summary>
+    /// Model for Position
+    /// </summary>
     public sealed class Position
     {
         public int PositionId { get; set; }

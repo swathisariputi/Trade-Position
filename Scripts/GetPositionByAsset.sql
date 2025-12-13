@@ -6,7 +6,7 @@ GO
 -- =============================================
 -- Author: Naga Swathi Sariputi
 -- Create date: 13/12/2025
--- Description: To get all the trades
+-- Description: To get all the positions
 -- =============================================
 CREATE PROCEDURE [dbo].[sp_get_position_by_asset]
 (@Asset nvarchar(50))

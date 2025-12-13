@@ -1,5 +1,8 @@
 ﻿namespace Trade_Position.Constants
 {
+    /// <summary>
+    /// Contains all the database constants 
+    /// </summary>
     public class DBContants
     {
         public const string SP_add_trade_history = "sp_add_trade_history";

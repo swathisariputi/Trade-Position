@@ -6,7 +6,7 @@ GO
 -- =============================================
 -- Author: Naga Swathi Sariputi
 -- Create date: 13/12/2025
--- Description: To store Trade info
+-- Description: To add Trade info
 -- =============================================
 CREATE PROCEDURE [dbo].[sp_add_trade_history]
 	(@Account [nvarchar](50), 

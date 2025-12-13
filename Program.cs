@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add controllers ONLY (no views)
 builder.Services.AddControllers();
 
-// Swagger (VERY GOOD for interview)
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

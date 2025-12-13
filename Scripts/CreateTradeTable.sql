@@ -1,3 +1,8 @@
+-- =============================================
+-- Author: Naga Swathi Sariputi
+-- Create date: 13/12/2025
+-- Description: To store trade info
+-- =============================================
 CREATE TABLE TradeHistory(
  TradeId BIGINT IDENTITY(1,1) PRIMARY KEY,
  Account NVARCHAR(50) NOT NULL,

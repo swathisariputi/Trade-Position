@@ -1,3 +1,9 @@
+-- =============================================
+-- Author: Naga Swathi Sariputi
+-- Create date: 13/12/2025
+-- Description: To store calculated Position info
+-- =============================================
+
 CREATE TABLE Position(
  PositionId BIGINT IDENTITY(1,1) PRIMARY KEY,
  Account NVARCHAR(50) NOT NULL,
