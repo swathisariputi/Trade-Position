@@ -6,7 +6,7 @@ GO
 -- =============================================
 -- Author: Naga Swathi Sariputi
 -- Create date: 13/12/2025
--- Description: To add calculated Position info
+-- Description: To add/update calculated Position info
 -- =============================================
 CREATE PROCEDURE [dbo].[sp_add_or_update_position]
 	(@Account [nvarchar](50), 
