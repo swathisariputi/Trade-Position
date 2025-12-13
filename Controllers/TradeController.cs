@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Trade_Position.Constants;
 using Trade_Position.Models;
 using Trade_Position.Services;
 
@@ -8,7 +9,7 @@ namespace Trade_Position.Controllers
     /// Trade Controller that exposes REST endpoints for adding trades and retrieving trades and positions
     /// </summary>
     [ApiController]
-    [Route("api")]
+    [Route("api/v1")]
     public class TradeController : ControllerBase
     {
         private readonly TradeService _tradeService;
@@ -25,11 +26,24 @@ namespace Trade_Position.Controllers
         /// <param name="trade"></param>
         /// <returns></returns>
         [HttpPost("add/trade")]
-        public ActionResult<Trade> SubmitTrade([FromBody] Trade trade)
+        public ActionResult<Trade> AddTrade([FromBody] Trade trade)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            _tradeService.AddTrade(trade);
-            return Ok();
+            var response = _tradeService.SubmitTradeDetails(trade, DBContants.action_add);
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// updates Trade
+        /// </summary>
+        /// <param name="trade"></param>
+        /// <returns></returns>
+        [HttpPut("update/trade")]
+        public ActionResult<Trade> UpdateTrade([FromBody] Trade trade) //to-do add existing tradeid validation
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var response = _tradeService.SubmitTradeDetails(trade, DBContants.action_update);
+            return Ok(response);
         }
 
         /// <summary>
@@ -50,11 +64,12 @@ namespace Trade_Position.Controllers
         /// Fetches the position of an asset
         /// </summary>
         /// <param name="Asset"></param>
+        /// <param name="Account"></param>
         /// <returns></returns>
-        [HttpGet("positions/{Asset}")]
-        public ActionResult<Position> GetPosition(string Asset)
+        [HttpGet("positions/{Account}/{Asset}")]
+        public ActionResult<Position> GetPosition(string Account, string Asset)
         {
-            var pos = _tradeService.GetPosition(Asset);
+            var pos = _tradeService.GetPosition(Account, Asset);
             if (pos == null) return NotFound();
             return Ok(pos);
         }

@@ -25,20 +25,21 @@ namespace Trade_Position.Repositories
         /// </summary>
         /// <param name="trade"></param>
         /// <returns></returns>
-        public decimal AddToTradeHistory(Trade trade)
+        public decimal AddOrUpdateTrade(Trade trade)
         {
             try
             {
                 using SqlConnection conn = new(_connectionString);
-                using SqlCommand cmd = new(DBContants.SP_add_trade_history, conn);
+                using SqlCommand cmd = new(DBContants.SP_add_or_update_trade, conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue(DBContants.TradeId, trade.TradeId);
                 cmd.Parameters.AddWithValue(DBContants.Account, trade.Account);
                 cmd.Parameters.AddWithValue(DBContants.Asset, trade.Asset);
                 cmd.Parameters.AddWithValue(DBContants.Price, trade.Price);
-                cmd.Parameters.AddWithValue(DBContants.TradeType, trade.TradeType);
+                cmd.Parameters.AddWithValue(DBContants.TradeType, trade.TradeType.ToString());
                 cmd.Parameters.AddWithValue(DBContants.Quantity, trade.Quantity);
                 conn.Open();
-                return Convert.ToDecimal(cmd.ExecuteScalar());
+                return Convert.ToInt32(cmd.ExecuteScalar());
             }
             catch(Exception ex)
             {
@@ -72,7 +73,7 @@ namespace Trade_Position.Repositories
                                 Price = Convert.ToDecimal(dr[DBContants.Price]),
                                 Quantity = Convert.ToInt64(dr[DBContants.Quantity]),
                                 TradeId = Convert.ToInt32(dr[DBContants.TradeId]),
-                                TradeType = Convert.ToString(dr[DBContants.TradeType]),
+                                TradeType = Enum.Parse<TradeType>(Convert.ToString(dr[DBContants.TradeType])),
                                 TradeTimeStamp = Convert.ToDateTime(dr[DBContants.TradeTimeStamp])
                             }).ToList();
                 }
@@ -161,15 +162,16 @@ namespace Trade_Position.Repositories
         /// </summary>
         /// <param name="Asset"></param>
         /// <returns></returns>
-        public Position GetPositionByAsset(string Asset)
+        public Position GetPositionOfAssetInAccount(string Account, string Asset)
         {
             Position position = new();
             try
             {
                 DataSet dataset = new();
                 using SqlConnection conn = new(_connectionString);
-                using SqlCommand cmd = new(DBContants.SP_get_postion_by_asset, conn);
+                using SqlCommand cmd = new(DBContants.SP_get_postion_of_asset_in_account, conn);
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue(DBContants.Account, Account);
                 cmd.Parameters.AddWithValue(DBContants.Asset, Asset);
                 SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
                 conn.Open();
@@ -185,9 +187,10 @@ namespace Trade_Position.Repositories
                     position.LastUpdated = Convert.ToDateTime(dataset.Tables[0].Rows[0][DBContants.LastUpdated]);
                     position.NotionalValue = Convert.ToDecimal(dataset.Tables[0].Rows[0][DBContants.NotionalValue]);
                     position.RealizedPnl = Convert.ToDecimal(dataset.Tables[0].Rows[0][DBContants.RealizedPnl]);
+                    return position;
                 }
 
-                return position;
+                return null;
             }
             catch (Exception ex)
             {
@@ -196,5 +199,39 @@ namespace Trade_Position.Repositories
             }
         }
 
+        public Trade GetTradeByTradeId(int TradeId)
+        {
+            Trade trade = null;
+            try
+            {
+                DataSet dataset = new();
+                using SqlConnection conn = new(_connectionString);
+                using SqlCommand cmd = new(DBContants.SP_get_trade_by_tradeId, conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue(DBContants.TradeId, TradeId);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                sqlDataAdapter.Fill(dataset);
+                if (dataset.Tables[0].Rows.Count > 0)
+                {
+                    trade = new Trade()
+                    {
+                        Account = Convert.ToString(dataset.Tables[0].Rows[0][DBContants.Account]),
+                        Asset = Convert.ToString(dataset.Tables[0].Rows[0][DBContants.Asset]),
+                        Price = Convert.ToDecimal(dataset.Tables[0].Rows[0][DBContants.Price]),
+                        Quantity = Convert.ToInt64(dataset.Tables[0].Rows[0][DBContants.Quantity]),
+                        TradeId = Convert.ToInt32(dataset.Tables[0].Rows[0][DBContants.TradeId]),
+                        TradeType = Enum.Parse<TradeType>(Convert.ToString(dataset.Tables[0].Rows[0][DBContants.TradeType])),
+                        TradeTimeStamp = Convert.ToDateTime(dataset.Tables[0].Rows[0][DBContants.TradeTimeStamp])
+                    };
+                }
+                return trade;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while fetching position of a asset: ", ex.ToString());
+                throw;
+            }
+        }
     }
 }
