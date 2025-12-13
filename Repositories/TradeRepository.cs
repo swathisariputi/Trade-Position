@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using System.Data;
 using System.Diagnostics;
 using Trade_Position.Constants;
 using Trade_Position.Interfaces;
@@ -39,8 +40,37 @@ namespace Trade_Position.Repositories
 
         public IReadOnlyCollection<Trade> GetAllTrade()
         {
-            var list = new List<Trade>();
-            return list;
+            try {
+                DataSet dataset = new();
+                var list = new List<Trade>();
+                using SqlConnection conn = new(_connectionString);
+                using SqlCommand cmd = new(DBContants.SP_get_all_trades, conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                sqlDataAdapter.Fill(dataset);
+                if (dataset.Tables[0].Rows.Count > 0)
+                {
+                    list = (from DataRow dr in dataset.Tables[0].Rows
+                            select new Trade()
+                            {
+                                Account = Convert.ToString(dr[DBContants.Account]),
+                                Asset = Convert.ToString(dr[DBContants.Asset]),
+                                Price = Convert.ToDecimal(dr[DBContants.Price]),
+                                Quantity = Convert.ToInt64(dr[DBContants.Quantity]),
+                                TradeId = Convert.ToInt32(dr[DBContants.TradeId]),
+                                TradeType = Convert.ToString(dr[DBContants.TradeType]),
+                                TradeTimeStamp = Convert.ToDateTime(dr[DBContants.TradeTimeStamp])
+                            }).ToList();
+                }
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while fetching trades: ", ex.ToString());
+                throw;
+            }
         }
 
         public IReadOnlyCollection<Trade> GetByAsset(string Asset)

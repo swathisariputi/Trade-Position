@@ -14,5 +14,8 @@
         public const string RealizedPnl = "RealizedPnl";
         public const string NotionalValue = "NotionalValue";
         public const string PositionStatus = "PositionStatus";
+        public const string SP_get_all_trades = "sp_get_trades";
+        public const string TradeId = "TradeId";
+        public const string TradeTimeStamp = "TradeTimeStamp";
     }
 }
