@@ -38,7 +38,7 @@ namespace Trade_Position.Controllers
         /// </summary>
         /// <param name="trade"></param>
         /// <returns></returns>
-        [HttpPost("update/trade")]
+        [HttpPut("update/trade")]
         public ActionResult<Trade> UpdateTrade([FromBody] Trade trade) //to-do add existing tradeid validation
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
