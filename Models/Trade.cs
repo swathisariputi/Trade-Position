@@ -2,6 +2,9 @@
 
 namespace Trade_Position.Models
 {
+    /// <summary>
+    /// Model for a trade
+    /// </summary>
     public sealed class Trade
     {
 
@@ -14,7 +17,7 @@ namespace Trade_Position.Models
         public string Account { get; set; }
 
         [Required]
-        public TradeType TradeType { get; set; }
+        public string TradeType { get; set; }
 
         [Required]
         [Range(1, long.MaxValue)]
@@ -24,9 +27,7 @@ namespace Trade_Position.Models
         [Range(typeof(decimal), "0.00000001", "79228162514264337593543950335")]
         public decimal Price { get; set; }
 
-        public string? TradeStatus { get; set; }
-
-        public DateTime Timestamp { get; init; }
+        public DateTime TradeTimeStamp { get; set; }
     }
 
     public enum TradeType

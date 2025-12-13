@@ -4,13 +4,11 @@ namespace Trade_Position.Interfaces
 {
     public interface ITradeRepository
     {
-        public void AddToTradeHistory(Trade trade);
+        public decimal AddToTradeHistory(Trade trade);
 
         public IReadOnlyCollection<Trade> GetAllTrade();
 
-        public IReadOnlyCollection<Trade> GetByAsset(string Asset);
-
-        public void AddToPositionHistory(Position position);
+        public void AddOrUpdatePosition(Position position);
         public IReadOnlyCollection<Position> GetAllPostion();
 
         public Position GetPositionByAsset(string Asset);
