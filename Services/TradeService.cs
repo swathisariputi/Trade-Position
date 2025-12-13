@@ -1,4 +1,5 @@
-﻿using Trade_Position.Constants;
+﻿using System.Collections.Generic;
+using Trade_Position.Constants;
 using Trade_Position.Interfaces;
 using Trade_Position.Models;
 
@@ -7,7 +8,7 @@ namespace Trade_Position.Services
     /// <summary>
     /// Service to write logic for endpoints
     /// </summary>
-    public class TradeService
+    public class TradeService : ITradeService
     {
         private readonly ITradeRepository _repo;
 
@@ -70,8 +71,17 @@ namespace Trade_Position.Services
         /// Get Position of an asset for an account
         /// </summary>
         /// <param name="Asset"></param>
+        /// <param name="Account"></param>
         /// <returns></returns>
         public Position GetPosition(string Account, string Asset) => _repo.GetPositionOfAssetInAccount(Account, Asset);
+
+        /// <summary>
+        /// Get trades of an asset for an account
+        /// </summary>
+        /// <param name="Asset"></param>
+        /// <param name="Account"></param>
+        /// <returns></returns>
+        public IReadOnlyCollection<Trade> GetTrades(string Account, string Asset) => _repo.GetTradeofAssetAccount(Account, Asset);
 
         /// <summary>
         /// Caluculates the position of an asset in an account when trade is added
