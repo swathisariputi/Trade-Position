@@ -17,5 +17,9 @@
         public const string SP_get_all_trades = "sp_get_trades";
         public const string TradeId = "TradeId";
         public const string TradeTimeStamp = "TradeTimeStamp";
+        public const string SP_get_all_positions = "sp_get_positions";
+        public const string PositionId = "PositionId";
+        public const string LastUpdated = "LastUpdated";
+        public const string SP_get_postion_by_asset = "sp_get_position_by_asset";
     }
 }

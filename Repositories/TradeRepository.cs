@@ -73,10 +73,6 @@ namespace Trade_Position.Repositories
             }
         }
 
-        public IReadOnlyCollection<Trade> GetByAsset(string Asset)
-        {
-            return Array.Empty<Trade>();
-        }
 
         public void AddToPositionHistory(Position position)
         {
@@ -104,14 +100,75 @@ namespace Trade_Position.Repositories
 
         public IReadOnlyCollection<Position> GetAllPostion()
         {
-            var list = new List<Position>();
-            return list;
+            try
+            {
+                DataSet dataset = new();
+                var list = new List<Position>();
+                using SqlConnection conn = new(_connectionString);
+                using SqlCommand cmd = new(DBContants.SP_get_all_positions, conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                sqlDataAdapter.Fill(dataset);
+                if (dataset.Tables[0].Rows.Count > 0)
+                {
+                    list = (from DataRow dr in dataset.Tables[0].Rows
+                            select new Position()
+                            {
+                                Account = Convert.ToString(dr[DBContants.Account]),
+                                Asset = Convert.ToString(dr[DBContants.Asset]),
+                                AveragePrice = Convert.ToDecimal(dr[DBContants.AveragePrice]),
+                                NetQuantity = Convert.ToInt64(dr[DBContants.NetQuantity]),
+                                PositionId = Convert.ToInt32(dr[DBContants.PositionId]),
+                                PositionStatus = Convert.ToString(dr[DBContants.PositionStatus]),
+                                LastUpdated = Convert.ToDateTime(dr[DBContants.LastUpdated]),
+                                NotionalValue = Convert.ToDecimal(dr[DBContants.NotionalValue]),
+                                RealizedPnl = Convert.ToDecimal(dr[DBContants.RealizedPnl])
+                            }).ToList();
+                }
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while fetching positions: ", ex.ToString());
+                throw;
+            }
         }
 
         public Position GetPositionByAsset(string Asset)
         {
-            Position postion = new();
-            return postion;
+            Position position = new();
+            try
+            {
+                DataSet dataset = new();
+                using SqlConnection conn = new(_connectionString);
+                using SqlCommand cmd = new(DBContants.SP_get_postion_by_asset, conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue(DBContants.Asset, Asset);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                sqlDataAdapter.Fill(dataset);
+                if (dataset.Tables[0].Rows.Count > 0)
+                {
+                    position.Account = Convert.ToString(dataset.Tables[0].Rows[0][DBContants.Account]);
+                    position.Asset = Convert.ToString(dataset.Tables[0].Rows[0][DBContants.Asset]);
+                    position.AveragePrice = Convert.ToDecimal(dataset.Tables[0].Rows[0][DBContants.AveragePrice]);
+                    position.NetQuantity = Convert.ToInt64(dataset.Tables[0].Rows[0][DBContants.NetQuantity]);
+                    position.PositionId = Convert.ToInt32(dataset.Tables[0].Rows[0][DBContants.PositionId]);
+                    position.PositionStatus = Convert.ToString(dataset.Tables[0].Rows[0][DBContants.PositionStatus]);
+                    position.LastUpdated = Convert.ToDateTime(dataset.Tables[0].Rows[0][DBContants.LastUpdated]);
+                    position.NotionalValue = Convert.ToDecimal(dataset.Tables[0].Rows[0][DBContants.NotionalValue]);
+                    position.RealizedPnl = Convert.ToDecimal(dataset.Tables[0].Rows[0][DBContants.RealizedPnl]);
+                }
+
+                return position;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while fetching position of a asset: ", ex.ToString());
+                throw;
+            }
         }
 
     }
