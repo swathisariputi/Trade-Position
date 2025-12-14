@@ -15,7 +15,7 @@ namespace Trade_Position.Validators
 
             RuleFor(t => t.Quantity).GreaterThan(0).WithMessage("Quantity must be greater than zero");
 
-            RuleFor(t => t.TradeType).NotEmpty().Must(BeValidTradeType).WithMessage("TradeType must be 0 or 1 indicating BUY or SELL");
+            RuleFor(t => t.TradeType).Must(BeValidTradeType).WithMessage("TradeType must be 0 or 1 indicating BUY or SELL");
         }
         private bool BeValidTradeType(TradeType tradeType)
         {

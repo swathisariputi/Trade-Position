@@ -89,7 +89,10 @@ namespace Trade_Position.Controllers
                     }
                     return StatusCode(StatusCodes.Status400BadRequest, errorString);
                 }
-
+                if (trade.TradeId == 0)
+                {
+                    trade.TradeId = TradeId;
+                }
                 if(TradeId != trade.TradeId)
                 {
                     return StatusCode(StatusCodes.Status400BadRequest, "TradeId should match with trade");
