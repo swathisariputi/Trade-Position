@@ -14,5 +14,7 @@ namespace Trade_Position.Interfaces
         public Position GetPositionOfAssetInAccount(string Account, string Asset);
 
         public Trade GetTradeByTradeId(int TradeId);
+
+        public IReadOnlyCollection<Trade> GetTradeofAssetAccount(string Account, string Asset);
     }
 }

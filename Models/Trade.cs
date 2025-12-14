@@ -8,7 +8,7 @@ namespace Trade_Position.Models
     public sealed class Trade
     {
 
-        public int TradeId { get; init; }
+        public int TradeId { get; set; }
 
         [Required]
         public string Asset { get; set; } = default!;

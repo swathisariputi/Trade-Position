@@ -233,5 +233,48 @@ namespace Trade_Position.Repositories
                 throw;
             }
         }
+
+        /// <summary>
+        /// returns all the trades of given account and assets
+        /// </summary>
+        /// <returns></returns>
+        public IReadOnlyCollection<Trade> GetTradeofAssetAccount(string Account, string Asset)
+        {
+            try
+            {
+                DataSet dataset = new();
+                var list = new List<Trade>();
+                using SqlConnection conn = new(_connectionString);
+                using SqlCommand cmd = new(DBContants.SP_get_trades_by_account_asset, conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue(DBContants.Account, Account);
+                cmd.Parameters.AddWithValue(DBContants.Asset, Asset);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                sqlDataAdapter.Fill(dataset);
+                if (dataset.Tables[0].Rows.Count > 0)
+                {
+                    list = (from DataRow dr in dataset.Tables[0].Rows
+                            select new Trade()
+                            {
+                                Account = Convert.ToString(dr[DBContants.Account]),
+                                Asset = Convert.ToString(dr[DBContants.Asset]),
+                                Price = Convert.ToDecimal(dr[DBContants.Price]),
+                                Quantity = Convert.ToInt64(dr[DBContants.Quantity]),
+                                TradeId = Convert.ToInt32(dr[DBContants.TradeId]),
+                                TradeType = Enum.Parse<TradeType>(Convert.ToString(dr[DBContants.TradeType])),
+                                TradeTimeStamp = Convert.ToDateTime(dr[DBContants.TradeTimeStamp])
+                            }).ToList();
+                }
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while fetching trades: ", ex.ToString());
+                throw;
+            }
+        }
+
     }
 }

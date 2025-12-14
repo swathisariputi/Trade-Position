@@ -27,5 +27,6 @@
         public const string LastUpdated = "LastUpdated";
         public const string SP_get_postion_of_asset_in_account = "sp_get_position_of_asset_in_account";
         public const string SP_get_trade_by_tradeId = "sp_get_trade_by_tradeId";
+        public const string SP_get_trades_by_account_asset = "sp_get_trades_by_account_asset";
     }
 }
